@@ -38,7 +38,7 @@ export default class Player {
       }
     }
     // const time = `${start.getHours()}:${String(start.getMinutes()).padStart(2, '0')}`;
-    console.log(time);
+    console.log(time());
     const video = wire()`<video style="width: 100%;" ></video>`;
 
     if (Hls.isSupported()) {

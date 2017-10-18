@@ -1,6 +1,5 @@
 'use strict';
 
-import {MDCToolbar} from '@material/toolbar';
 import config from '../../config.json';
 import CryptoJS from 'crypto-js';
 import fetchp from 'fetch-jsonp';
@@ -225,9 +224,6 @@ async function handleRouteChange() {
   player.render();
 }
 
-// Attach dynamic behaviour to the MDC toolbar element
-const mdcToolbar = MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
-mdcToolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
 
 // UI elements we bind to
 const header = document.querySelector('header');
