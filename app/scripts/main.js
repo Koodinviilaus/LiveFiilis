@@ -5,6 +5,7 @@ import CryptoJS from 'crypto-js';
 import fetchp from 'fetch-jsonp';
 import Player from './views/Player';
 import Toolbar from './views/Toolbar';
+import ChatBox from './views/ChatBox';
 
 /**
  * Fetch the current TV shows using JSONP and fetch JSONP polyfill.
@@ -222,12 +223,15 @@ async function handleRouteChange() {
   player.url = url;
   player.program = currentProgram;
   player.render();
+
+  chatbox.render()
 }
 
 
 // UI elements we bind to
 const header = document.querySelector('header');
 const main = document.querySelector('main');
+const section = document.querySelector('#chatbox');
 
 // API configuration
 const baseUrl = 'https://external.api.yle.fi/v1';
@@ -239,6 +243,7 @@ let programs = [];
 // UI Elements
 const toolbar = new Toolbar(header);
 const player = new Player(main);
+const chatbox = new ChatBox(section)
 
 // Update for UI state changes
 window.addEventListener('hashchange', handleRouteChange);
