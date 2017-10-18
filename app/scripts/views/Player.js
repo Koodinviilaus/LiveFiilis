@@ -55,11 +55,6 @@ export default class Player {
 
 
     return bind(this.element)`
-    <div class="mdc-card">
-      <section class="mdc-card__primary">
-        <h1 class="mdc-card__title mdc-card__title--large">${ this.program.title}</h1>
-      </section>
-    </div>
       ${ video }
       <ul style="max-height:">
       ${ messages.map((message) => `<li>${message}</li>`)}
