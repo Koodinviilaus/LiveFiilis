@@ -47,13 +47,7 @@
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   </head>
   <body class="mdc-typography">
-    <header name="toolbar" class="mdc-toolbar mdc-toolbar--fixed mdc-toolbar--fixed-lastrow-only mdc-toolbar--waterfall mdc-toolbar--flexible mdc-toolbar--flexible-default-behavior">
-      <div class="mdc-toolbar__row">
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <a href="#" class="material-icons mdc-toolbar__icon--menu">menu</a>
-          <span class="mdc-toolbar__title">Now Playing</span>
-        </section>
-      </div>
+    <header name="toolbar" class="mdc-toolbar">
       <div class="mdc-toolbar__row">
         <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
           <nav class="mdc-tab-bar mdc-tab-bar-scroller__scroll-frame__tabs">
@@ -61,9 +55,8 @@
           </div>
         </section>
       </div>
-      <div class="header-background"></div>
     </header>
-    <main class="mdc-toolbar-fixed-adjust">
+    <main>
     </main>
 
     <!-- build:js scripts/main.min.js -->

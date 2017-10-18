@@ -1,7 +1,5 @@
 'use strict';
 
-import {MDCToolbar} from '@material/toolbar';
-import ChannelGuide from './views/ChannelGuide';
 import config from '../../config.json';
 import CryptoJS from 'crypto-js';
 import fetchp from 'fetch-jsonp';
@@ -126,6 +124,7 @@ async function fetch() {
       contentId: program.content.id,
       channelId: linkedChannel.id,
       imageId: imageId,
+      mediaId: mediaId,
       title: program.content.title.fi || program.content.title.sv,
       channel: linkedChannel.title,
       description: program.content.description.fi || program.content.description.sv,
@@ -177,7 +176,7 @@ async function init() {
   if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || isLocalhost)) {
     // Wait for Service Worker to register, then assign the handle
     const swRegistration = await navigator.serviceWorker.register('service-worker.js');
-    guide.registerWorker(swRegistration);
+
   }
 
   // Fetch the data
@@ -202,40 +201,29 @@ async function handleRouteChange() {
 
   // Perform the routing
   const segments = hashPart.split('/');
-  switch (segments[0]) {
-    case 'channels':
-      // Infer the current channel from the URL hash part
-      const channelId = segments[1];
-      // Just use the programs that are specific for this channel
-      const filtered = programs.filter((p) => p.channelId === channelId );
-      const currentProgram = filtered.find((p) => p.channelId === channelId) || filtered[0];
 
-      toolbar.program = currentProgram;
-      toolbar.channels = channels;
-      toolbar.render();
-      guide.programs = filtered;
-      guide.render();
-      return;
-    case 'play':
-      const contentId = segments[1];
-      const mediaId = segments[2];
-      const program = programs.find((p) => p.contentId === contentId);
-      const stream = await fetchStream(contentId, mediaId);
-      const url = decrypt(stream.url, config.secret);
+  // Infer the current channel from the URL hash part
+  const channelId = segments[1];
+  // Just use the programs that are specific for this channel
+  const filtered = programs.filter((p) => p.channelId === channelId );
+  const currentProgram = filtered[0];
 
-      player.url = url;
-      player.program = program;
-      player.render();
-      return;
-    default:
-      console.log(`No route handler found for ${hashPart}`);
-      return init();
-  }
+  // Update toolbar and render it
+  toolbar.program = currentProgram;
+  toolbar.channels = channels;
+  toolbar.render();
+
+  const contentId = currentProgram.contentId; //segments[1];
+  const mediaId = currentProgram.mediaId; //segments[2];
+
+  const stream = await fetchStream(contentId, mediaId);
+  const url = decrypt(stream.url, config.secret);
+
+  player.url = url;
+  player.program = currentProgram;
+  player.render();
 }
 
-// Attach dynamic behaviour to the MDC toolbar element
-const mdcToolbar = MDCToolbar.attachTo(document.querySelector('.mdc-toolbar'));
-mdcToolbar.fixedAdjustElement = document.querySelector('.mdc-toolbar-fixed-adjust');
 
 // UI elements we bind to
 const header = document.querySelector('header');
@@ -250,7 +238,6 @@ let programs = [];
 
 // UI Elements
 const toolbar = new Toolbar(header);
-const guide = new ChannelGuide(main);
 const player = new Player(main);
 
 // Update for UI state changes
