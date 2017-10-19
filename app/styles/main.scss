@@ -35,3 +35,13 @@ $mdc-theme-background: #fff;
 
 // Override some of their default behaviours
 @import "overrides";
+
+.chat-messages {
+  background-color: #1d1d1c;
+  color: #dee787;
+  box-shadow: 0px 10px 25px -8px #ffffff inset;
+
+  li {
+    list-style-type: none;
+  }
+}

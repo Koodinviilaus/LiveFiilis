@@ -1,5 +1,6 @@
 import { bind, wire } from 'hyperhtml';
 // import Hls from 'hls.js'
+import valechatti from '../../../valechatti.json';
 
 /**
  * The HyperHTML view displaying the video player and channel details.
@@ -18,6 +19,10 @@ export default class Player {
     this.program = program;
   }
 
+  parceMessages() {
+    //return ['testmsg1', 'testmsg']
+    return valechatti;
+  }
   /**
    * Renders the player.
    *
@@ -26,7 +31,7 @@ export default class Player {
   render() {
     console.log(`Render Player with url '${this.url}'`);
 
-    const messages = [];
+    const messages = this.parceMessages();
     const start = this.program.startTime;
     const startSeconds = start.getTime() / 1000;
     console.log(startSeconds);
@@ -51,13 +56,11 @@ export default class Player {
         });
     }
 
-
     return bind(this.element) `
       ${ video}
-      <ul style="max-height:">
-      ${ messages.map((message) => `<li>${message}</li>`)}
+      <ul class="chat-messages">
+      ${ messages.map((message) => `<li>${message.msg}</li>`)}
      </ul>
-
     `;
   }
 }
