@@ -23,7 +23,8 @@ export default class ChatBox {
     }
 
     connectToSocket() {
-        const channelsUrl = 'ws://localhost:4000/socket'
+        // const channelsUrl = 'ws://localhost:4000/socket'
+        const channelsUrl = 'ws://192.168.1.118:4000/socket'
         // let channel
         const socket = new Socket(channelsUrl, {
         logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data); }

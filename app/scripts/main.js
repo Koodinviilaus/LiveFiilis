@@ -168,17 +168,17 @@ async function init() {
 
   // Register the service worker
   // [::1] is the IPv6 localhost address; 127.0.0.1/8 is localhos
-  const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
-        window.location.hostname === '[::1]' || window.location.hostname.match(
-        /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-      )
-    );
+  // const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
+  //       window.location.hostname === '[::1]' || window.location.hostname.match(
+  //       /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+  //     )
+  //   );
 
-  if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || isLocalhost)) {
-    // Wait for Service Worker to register, then assign the handle
-    const swRegistration = await navigator.serviceWorker.register('service-worker.js');
+  // if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || isLocalhost)) {
+  //   // Wait for Service Worker to register, then assign the handle
+  //   const swRegistration = await navigator.serviceWorker.register('service-worker.js');
 
-  }
+  // }
 
   // Fetch the data
   await fetch();
