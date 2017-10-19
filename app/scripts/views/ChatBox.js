@@ -54,7 +54,10 @@ export default class ChatBox {
             <div id="chat-master">
                 <div id="chat-stream">
                     <ul>
-                        ${ this.state.map(message => `<li>${message}<li>`) }
+                        ${ this.state.map(message => {
+                            if (message) {
+                            return `<li>${message}<li>`
+                        }}) }
                     </ul>
                 </div>
             Hello Tuomo
