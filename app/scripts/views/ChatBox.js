@@ -1,23 +1,27 @@
-import { wire, bind } from 'hyperhtml'
+// import { wire, bind } from 'hyperhtml'
+import { bind } from 'hyperhtml'
 import { Socket } from 'phoenix'
 
-
-// function ChatBox(props) {
-//     console.log("Tilakomponentti")
-//     console.log(props)
-//     return bind(props)`
-//     <h1>Hello, Tuomo</h1>`;
-//   }
-
-class ChatBox {
-    constructor(props) {
-        // super(props)
+export default class ChatBox {
+    constructor(element) {
         console.log("component mouning...")
-        this.props = props
-
+        this.element = element
+        
         this.connectToSocket()
+        console.log(this)
 
-        this.state = []
+        this._state = [];
+        console.log("state from constructor:")
+        console.log(this.state)
+    }
+
+    set state(newState) {
+        this._state = newState;
+        this.render();
+    }
+
+    get state() {
+        return this._state;
     }
 
     connectToSocket() {
@@ -36,21 +40,26 @@ class ChatBox {
         channel.on("shout", (message) => {
             console.log("Message received")
             console.log(message)
-            this.setState([...this.state, message])
+            this.state = this.state.concat([message.message]);
+            console.log("koko state: " + this.state)
         })
     }
 
 
 
-
-
-
-
     render() {
-        return bind(this.props)`
-        <div>Hello Tuomo</div>
+        console.log("state:")
+        console.log(this.state)
+        return bind(this.element)`
+            <div id="chat-master">
+                <div id="chat-stream">
+                    <ul>
+                        ${ this.state.map(message => `<li>${message}<li>`) }
+                    </ul>
+                </div>
+            Hello Tuomo
+            
+            </div>
         `
     }
 }
- 
-export default ChatBox
