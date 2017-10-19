@@ -5,6 +5,7 @@ import CryptoJS from 'crypto-js';
 import fetchp from 'fetch-jsonp';
 import Player from './views/Player';
 import Toolbar from './views/Toolbar';
+import ChatBox from './views/ChatBox';
 
 /**
  * Fetch the current TV shows using JSONP and fetch JSONP polyfill.
@@ -167,17 +168,17 @@ async function init() {
 
   // Register the service worker
   // [::1] is the IPv6 localhost address; 127.0.0.1/8 is localhos
-  const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
-        window.location.hostname === '[::1]' || window.location.hostname.match(
-        /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
-      )
-    );
+  // const isLocalhost = Boolean(window.location.hostname === 'localhost' ||
+  //       window.location.hostname === '[::1]' || window.location.hostname.match(
+  //       /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+  //     )
+  //   );
 
-  if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || isLocalhost)) {
-    // Wait for Service Worker to register, then assign the handle
-    const swRegistration = await navigator.serviceWorker.register('service-worker.js');
+  // if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || isLocalhost)) {
+  //   // Wait for Service Worker to register, then assign the handle
+  //   const swRegistration = await navigator.serviceWorker.register('service-worker.js');
 
-  }
+  // }
 
   // Fetch the data
   await fetch();
@@ -222,12 +223,15 @@ async function handleRouteChange() {
   player.url = url;
   player.program = currentProgram;
   player.render();
+
+  chatbox.render()
 }
 
 
 // UI elements we bind to
 const header = document.querySelector('header');
 const main = document.querySelector('main');
+const section = document.querySelector('#chatbox');
 
 // API configuration
 const baseUrl = 'https://external.api.yle.fi/v1';
@@ -239,6 +243,7 @@ let programs = [];
 // UI Elements
 const toolbar = new Toolbar(header);
 const player = new Player(main);
+const chatbox = new ChatBox(section)
 
 // Update for UI state changes
 window.addEventListener('hashchange', handleRouteChange);

@@ -1,0 +1,62 @@
+
+#chat-master {
+    height: 50%;
+}
+
+#chat-stream {
+    z-index: 3;
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+.chat-list {
+    display: flex;
+    flex-direction: column-reverse;
+    word-wrap: break-word;
+    list-style: none;
+}
+
+
+.class1 {
+    color: red;
+}
+
+.class2 {
+    color: brown;
+}
+
+.class3 {
+    color: blue;
+}
+
+.class4 {
+    color: green;
+}
+
+.class5 {
+    color: turquoise;
+}
+
+.class6 {
+    color: maroon;
+}
+
+
+.chat-item {
+    text-align: center;
+    word-wrap: break-word;
+    margin: 1em;
+}
+
+.chat-form-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    z-index: 10;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 2.5em;
+    text-align: center;
+}
