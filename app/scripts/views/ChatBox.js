@@ -56,6 +56,9 @@ export default class ChatBox {
     set messages(newMessages) {
         this._messages = newMessages;
         this.render();
+        // let chatItems = document.getElementsByClassName('chat-item')
+        // let lastItem = chatItems[chatItems.length-1]
+        // lastIem.focus()
     }
 
     get messages() {
@@ -78,7 +81,18 @@ export default class ChatBox {
         event.stopPropagation()
     }
 
+    randomColor() {
+        let x = Math.random()*6
+        let y = Math.floor(x)
+        let b = y.toString()
+        let d = " chat-item"
 
+        return "class" + b
+        // return `${b}chat-item`
+        // return "chat item"
+    }
+
+    // document.getElementByClassName('')
 
     render() {
         // const that = this
@@ -92,14 +106,12 @@ export default class ChatBox {
             <div id="chat-master">
                 <div id="chat-stream">
                     <ul class="chat-list">
-                        ${ this.messages.map(message => `<li class="chat-item">${message}<li>`)}
-                        <li class="chat-item">Ensimmäinen viesti</li>
+                        ${ this.messages.map(message => `<li class="${this.randomColor()} chat-item">${message}<li>`)}
                     </ul>
                     <form action="#" id="send-message-from" onSubmit=${this.handleSubmit}>
                     <div class="mdc-textfield chat-form-div">
-                        <input type="text" id="chat-input" class="mdc-textfield__input" value=${this.formInput} oninput=${this.handleChange}>
-                        <label class="mdc-textfield__label" for="my-textfield">Kirjoita viesti...</label>
-                        <input type="submit" value="submit">
+                        <input type="text" id="chat-input" class="mdc-textfield__input" value=${this.formInput} oninput=${this.handleChange}
+                        placeholder="Kirjoita viesti...">
                   </div>
                   </form>
                 </div>
@@ -107,3 +119,5 @@ export default class ChatBox {
         `
     }
 }
+
+// <input type="submit" value="submit">
