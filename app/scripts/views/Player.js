@@ -31,18 +31,20 @@ export default class Player {
     console.log(start);
     const currentTime = new Date();
     console.log(currentTime);
-    const time= function(){
-      if((currentTime.getHours()-start.getHours())==0) {
+    const time= function() {
+      if ((currentTime.getHours()-start.getHours())==0) {
         let minutes = currentTime.getMinutes() - start.getMinutes();
-        return `${start.getHours()}:${String(minutes).padStart(2, '0')}`
+        return `${start.getHours()}:${String(minutes).padStart(2, '0')}`;
       }
-    }
+    };
     // const time = `${start.getHours()}:${String(start.getMinutes()).padStart(2, '0')}`;
     console.log(time());
     const video = wire()`<video style="width: 100%;" ></video>`;
-
+    let config = {
+    startPosition: 30,
+  };
     if (Hls.isSupported()) {
-      const hls = new Hls();
+      const hls = new Hls(config);
       hls.loadSource(this.url);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED,
