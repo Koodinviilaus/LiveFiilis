@@ -16,24 +16,26 @@ export default class ChatBox {
         this._input = "";
 
         this._messages = []
+
+        this.channel
         console.log("state from constructor:")
         console.log(this.state)
     }
 
     connectToSocket() {
         const channelsUrl = 'ws://localhost:4000/socket'
-        let channel
+        // let channel
         const socket = new Socket(channelsUrl, {
         logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data); }
         });
         socket.connect()
-        channel = socket.channel("stream_channel:yle")     
-        channel.join()
+        this.channel = socket.channel("stream_channel:yle")     
+        this.channel.join()
         .receive("ok", ({messages}) => console.log("joined stream_channel:yle", messages) )
         .receive("error", ({reason}) => console.log("failed join", reason) )
         .receive("timeout", () => console.log("Networking issue. Still waiting..."))
 
-        channel.on("shout", (message) => {
+        this.channel.on("shout", (message) => {
             console.log("Message received")
             console.log(message)
             this.messages = [...this.messages, message.message]
@@ -70,7 +72,7 @@ export default class ChatBox {
     handleSubmit() {
         console.log("submit")
         console.log("handleSubmit input:" + this.formInput)
-        console.log(this)
+        this.channel.push('shout', { message: this.formInput })
         event.preventDefault()
         event.stopPropagation()
     }

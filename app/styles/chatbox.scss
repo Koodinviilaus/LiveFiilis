@@ -11,12 +11,12 @@
     background-color: lime;
 }
 
-.chat-list {
+#chat-list {
     background-color: grey;
+    list-style: none;
 }
 
 .chat-item {
-    list-style: none;
     text-align: center;
 }
 
