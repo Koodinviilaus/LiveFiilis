@@ -1,0 +1,29 @@
+
+#chat-master {
+    background-color: pink;
+    height: 50%;
+    min-height: 50%;
+}
+
+#chat-stream {
+    display: flex;
+    flex-direction: column;
+    background-color: lime;
+}
+
+.chat-list {
+    background-color: grey;
+}
+
+.chat-item {
+    list-style: none;
+    text-align: center;
+}
+
+.chat-form-div {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 2em;
+    text-align: center;
+}

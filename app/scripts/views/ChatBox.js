@@ -6,22 +6,18 @@ export default class ChatBox {
     constructor(element) {
         console.log("component mouning...")
         this.element = element
+
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         
         this.connectToSocket()
         console.log(this)
 
-        this._state = [];
+        this._input = "";
+
+        this._messages = []
         console.log("state from constructor:")
         console.log(this.state)
-    }
-
-    set state(newState) {
-        this._state = newState;
-        this.render();
-    }
-
-    get state() {
-        return this._state;
     }
 
     connectToSocket() {
@@ -40,28 +36,70 @@ export default class ChatBox {
         channel.on("shout", (message) => {
             console.log("Message received")
             console.log(message)
-            this.state = this.state.concat([message.message]);
-            console.log("koko state: " + this.state)
+            this.messages = [...this.messages, message.message]
         })
+    }
+
+    set formInput(newInput) {
+        console.log("input called with params: " + newInput)
+        this._input = newInput;
+        console.log("new input: " + this._input)
+        this.render();
+    }
+
+    get formInput() {
+        return this._input;
+    }
+
+    set messages(newMessages) {
+        this._messages = newMessages;
+        this.render();
+    }
+
+    get messages() {
+        return this._messages;
+    }
+
+    handleChange(event) {
+        console.log("handleChange")
+        console.log(event.target.value)
+        this.formInput = event.target.value
+        console.log("new this.input:" + this.formInput)
+    }
+
+    handleSubmit() {
+        console.log("submit")
+        console.log("handleSubmit input:" + this.formInput)
+        console.log(this)
+        event.preventDefault()
+        event.stopPropagation()
     }
 
 
 
     render() {
+        const that = this
+        const submit = document.querySelector("#send-message-form")
+        console.log("submit element")
+        console.log("render called")
+        console.log(this)
         console.log("state:")
         console.log(this.state)
         return bind(this.element)`
             <div id="chat-master">
                 <div id="chat-stream">
-                    <ul>
-                        ${ this.state.map(message => {
-                            if (message) {
-                            return `<li>${message}<li>`
-                        }}) }
+                    <ul class="chat-list">
+                        ${ this.messages.map(message => `<li class="chat-item">${message}<li>`)}
+                        <li class="chat-item">Ensimmäinen viesti</li>
                     </ul>
+                    <form action="#" id="send-message-from" onSubmit=${that.handleSubmit}>
+                    <div class="mdc-textfield chat-form-div">
+                        <input type="text" id="chat-input" class="mdc-textfield__input" oninput=${that.handleChange}>
+                        <label class="mdc-textfield__label" for="my-textfield">Kirjoita viesti...</label>
+                        <input type="submit" value="submit">
+                  </div>
+                  </form>
                 </div>
-            Hello Tuomo
-            
             </div>
         `
     }

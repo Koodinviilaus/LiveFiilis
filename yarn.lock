@@ -34,6 +34,16 @@
   dependencies:
     "@material/animation" "^0.4.1"
 
+"@material/form-field@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@material/form-field/-/form-field-0.23.0.tgz#461007147a76e3104b2ce1f409d540cf70f3dbe5"
+  dependencies:
+    "@material/base" "^0.2.6"
+    "@material/rtl" "^0.1.8"
+    "@material/selection-control" "^0.23.0"
+    "@material/theme" "^0.4.0"
+    "@material/typography" "^0.3.0"
+
 "@material/list@^0.2.19":
   version "0.2.20"
   resolved "https://registry.yarnpkg.com/@material/list/-/list-0.2.20.tgz#5ed4b31be3b19c1ac5c2f45b8bd8885bb5737434"
@@ -42,6 +52,13 @@
     "@material/rtl" "^0.1.8"
     "@material/theme" "^0.4.0"
     "@material/typography" "^0.3.0"
+
+"@material/ripple@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@material/ripple/-/ripple-0.23.0.tgz#d5cd1b3014d0d079b835fc62d51eccbb5d775373"
+  dependencies:
+    "@material/base" "^0.2.6"
+    "@material/theme" "^0.4.0"
 
 "@material/ripple@^0.8.8":
   version "0.8.8"
@@ -54,6 +71,12 @@
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/@material/rtl/-/rtl-0.1.8.tgz#2462db15e2d4e041666485559c028382872b01fb"
 
+"@material/selection-control@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@material/selection-control/-/selection-control-0.23.0.tgz#a819cf655cee857c48979f412c7f5702f40e280a"
+  dependencies:
+    "@material/ripple" "^0.23.0"
+
 "@material/tabs@^0.3.1":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@material/tabs/-/tabs-0.3.1.tgz#f94fee064ca5b0515ef038413f8658c766b98ff8"
@@ -61,6 +84,17 @@
     "@material/animation" "^0.4.1"
     "@material/base" "^0.2.6"
     "@material/ripple" "^0.8.8"
+    "@material/rtl" "^0.1.8"
+    "@material/theme" "^0.4.0"
+    "@material/typography" "^0.3.0"
+
+"@material/textfield@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@material/textfield/-/textfield-0.23.0.tgz#79d4c08fde99b90b2a2479081d8f926a3e70228d"
+  dependencies:
+    "@material/animation" "^0.4.1"
+    "@material/base" "^0.2.6"
+    "@material/ripple" "^0.23.0"
     "@material/rtl" "^0.1.8"
     "@material/theme" "^0.4.0"
     "@material/typography" "^0.3.0"

@@ -64,8 +64,10 @@
   "dependencies": {
     "@material/button": "^0.7.0",
     "@material/card": "^0.2.9",
+    "@material/form-field": "^0.23.0",
     "@material/list": "^0.2.19",
     "@material/tabs": "^0.3.1",
+    "@material/textfield": "^0.23.0",
     "@material/toolbar": "^0.4.11",
     "@material/typography": "^0.3.0",
     "crypto-js": "^3.1.9-1",
