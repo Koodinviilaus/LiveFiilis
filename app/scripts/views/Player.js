@@ -1,4 +1,4 @@
-import {bind, wire} from 'hyperhtml';
+import { bind, wire } from 'hyperhtml';
 // import Hls from 'hls.js'
 
 /**
@@ -28,36 +28,32 @@ export default class Player {
 
     const messages = [];
     const start = this.program.startTime;
-    console.log(start);
-    const currentTime = new Date();
-    console.log(currentTime);
-    const time= function() {
-      if ((currentTime.getHours()-start.getHours())==0) {
-        let minutes = currentTime.getMinutes() - start.getMinutes();
-        return `${start.getHours()}:${String(minutes).padStart(2, '0')}`;
-      }
-    };
+    const startSeconds = start.getTime() / 1000;
+    console.log(startSeconds);
+    const currentTimeSeconds = Date.now() / 1000 | 0;
+    console.log('currenttimesecond: ' + currentTimeSeconds + 'startSeconds' + startSeconds);
+    const timeSeconds = (currentTimeSeconds - startSeconds)-51;
     // const time = `${start.getHours()}:${String(start.getMinutes()).padStart(2, '0')}`;
-    console.log(time());
-    const video = wire()`<video style="width: 100%;" ></video>`;
+    const video = wire() `<video style="width: 100%;" ></video>`;
+    console.log('timeseconds ' + timeSeconds);
     let config = {
-    startPosition: 30,
-  };
+      startPosition: timeSeconds,
+    };
     if (Hls.isSupported()) {
       const hls = new Hls(config);
       hls.loadSource(this.url);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED,
-        function() {
-        console.log('Try to play video');
+      function () {
+          console.log('Try to play video');
           video.play();
           console.log('should be playing');
-      });
+        });
     }
 
 
-    return bind(this.element)`
-      ${ video }
+    return bind(this.element) `
+      ${ video}
       <ul style="max-height:">
       ${ messages.map((message) => `<li>${message}</li>`)}
      </ul>
