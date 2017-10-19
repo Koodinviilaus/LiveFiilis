@@ -73,6 +73,7 @@ export default class ChatBox {
         console.log("submit")
         console.log("handleSubmit input:" + this.formInput)
         this.channel.push('shout', { message: this.formInput })
+        this.formInput = ""
         event.preventDefault()
         event.stopPropagation()
     }
@@ -80,7 +81,7 @@ export default class ChatBox {
 
 
     render() {
-        const that = this
+        // const that = this
         const submit = document.querySelector("#send-message-form")
         console.log("submit element")
         console.log("render called")
@@ -94,9 +95,9 @@ export default class ChatBox {
                         ${ this.messages.map(message => `<li class="chat-item">${message}<li>`)}
                         <li class="chat-item">Ensimmäinen viesti</li>
                     </ul>
-                    <form action="#" id="send-message-from" onSubmit=${that.handleSubmit}>
+                    <form action="#" id="send-message-from" onSubmit=${this.handleSubmit}>
                     <div class="mdc-textfield chat-form-div">
-                        <input type="text" id="chat-input" class="mdc-textfield__input" oninput=${that.handleChange}>
+                        <input type="text" id="chat-input" class="mdc-textfield__input" value=${this.formInput} oninput=${this.handleChange}>
                         <label class="mdc-textfield__label" for="my-textfield">Kirjoita viesti...</label>
                         <input type="submit" value="submit">
                   </div>
