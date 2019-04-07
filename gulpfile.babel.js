@@ -37,6 +37,7 @@ import runSequence from 'run-sequence';
 import webpack from 'webpack';
 import webpackStream from 'webpack-stream';
 import workboxBuild from 'workbox-build';
+import { doesNotReject } from 'assert';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -172,10 +173,12 @@ gulp.task('html', () => {
 });
 
 // Clean output directory
-gulp.task('clean', () => del(['.tmp', 'dist/*', '!dist/.git'], {dot: true}));
+gulp.task('clean', () => 
+  del(['.tmp', 'dist/*', '!dist/.git'], {dot: true})
+);
 
 // Watch files for changes & reload
-gulp.task('serve', ['scripts', 'styles'], () => {
+gulp.task('serve', gulp.series(['scripts', 'styles'], () => {
   browserSync({
     notify: false,
     // Customize the Browsersync console logging prefix
@@ -199,48 +202,11 @@ gulp.task('serve', ['scripts', 'styles'], () => {
     port: 3000,
   });
 
-  gulp.watch(['app/**/*.html'], reload);
-  gulp.watch(['app/styles/**/*.{scss,css}'], ['styles', reload]);
-  gulp.watch(['app/scripts/**/*.js'], ['lint', 'scripts', reload]);
+  gulp.watch(['app/**/*.html'], gulp.series(reload));
+  gulp.watch(['app/styles/**/*.{scss,css}'], gulp.series(['styles', reload]));
+  gulp.watch(['app/scripts/**/*.js'], gulp.series(['lint', 'scripts', reload]));
   gulp.watch(['app/images/**/*'], reload);
-});
-
-// Build and serve the output from the dist build
-gulp.task('serve:dist', ['default'], () =>
-  browserSync({
-    notify: false,
-    logPrefix: 'WSK',
-    // Allow scroll syncing across breakpoints
-    scrollElementMapping: ['main'],
-    // Run as an https by uncommenting 'https: true'
-    // Note: this uses an unsigned certificate which on first access
-    //       will present a certificate warning in the browser.
-    // https: true,
-    server: 'dist',
-    // https: true,
-    // Custom PUSH backend handler
-    middleware: [
-      require('body-parser').json(),
-      {
-        route: '/api/subscriptions',
-        handle: pushHandler,
-      },
-    ],
-    /* key: './certs/192.168.1.101.key',
-    cert: './certs/192.168.1.101.crt',*/
-    port: 3001,
-  })
-);
-
-// Build production files, the default task
-gulp.task('default', ['clean'], (cb) =>
-  runSequence(
-    'styles',
-    ['lint', 'html', 'scripts', 'images', 'copy'],
-    'generate-service-worker',
-    cb
-  )
-);
+}));
 
 // Run PageSpeed Insights
 gulp.task('pagespeed', (cb) =>
@@ -264,12 +230,7 @@ gulp.task('copy-workbox', () => {
   .pipe(gulp.dest('dist/scripts/service-worker'));
 });
 
-// See http://www.html5rocks.com/en/tutorials/service-worker/introduction/ for
-// an in-depth explanation of what service workers are and why you should care.
-// Generate a service worker file that will provide offline functionality for
-// local resources. This should only be done for the 'dist' directory, to allow
-// live reload to work as expected when serving from the 'app' directory.
-gulp.task('generate-service-worker', ['copy', 'copy-workbox'], () => {
+gulp.task('make-service-worker', gulp.series(['copy', 'copy-workbox'], (resolve, reject) => {
   // Note: We use a partial manifest where we inject the built files.
   return workboxBuild.injectManifest({
     globDirectory: './dist/',
@@ -280,11 +241,57 @@ gulp.task('generate-service-worker', ['copy', 'copy-workbox'], () => {
   })
   .then(() => {
     console.log('Service worker generated.');
+    resolve();
   })
   .catch((err) => {
     console.log('[ERROR] This happened: ' + err);
+    reject();
   });
-});
+}));
+
+
+
+// Build production files, the default task
+gulp.task('default', gulp.series('clean', 'styles', 'lint', 'html', 'scripts', 'images', 'copy', 'make-service-worker', (cb) =>
+  runSequence(cb).done()
+));
+
+
+// Build and serve the output from the dist build
+gulp.task('serve:dist', gulp.series('default', () =>
+  browserSync({
+    notify: false,
+    logPrefix: 'WSK',
+    // Allow scroll syncing across breakpoints
+    scrollElementMapping: ['main'],
+    // Run as an https by uncommenting 'https: true'
+    // Note: this uses an unsigned certificate which on first access
+    //       will present a certificate warning in the browser.
+    // https: true,
+    server: 'dist',
+    // https: true,
+    // Custom PUSH backend handler
+    middleware: [
+      require('body-parser').json(),
+      {
+        route: '/api/subscriptions',
+        handle: pushHandler,
+      },
+    ],
+    /* key: './certs/192.168.1.101.key',
+    cert: './certs/192.168.1.101.crt',*/
+    port: 3001,
+  })
+));
+
+
+
+// See http://www.html5rocks.com/en/tutorials/service-worker/introduction/ for
+// an in-depth explanation of what service workers are and why you should care.
+// Generate a service worker file that will provide offline functionality for
+// local resources. This should only be done for the 'dist' directory, to allow
+// live reload to work as expected when serving from the 'app' directory.
+
 
 // Load custom tasks from the `tasks` directory
 // Run: `npm install --save-dev require-dir` from the command-line
