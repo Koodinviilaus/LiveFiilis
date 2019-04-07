@@ -5,7 +5,26 @@ import CryptoJS from 'crypto-js';
 import fetchp from 'fetch-jsonp';
 import Player from './views/Player';
 import Toolbar from './views/Toolbar';
-import ChatBox from './views/ChatBox';
+//import ChatBox from './views/ChatBox';
+
+// UI elements we bind to
+const header = document.querySelector('header');
+const main = document.querySelector('main');
+const section = document.querySelector('#chatbox');
+
+// API configuration
+const baseUrl = 'https://external.api.yle.fi/v1';
+
+// Application state data
+let channels = [];
+let programs = [];
+
+// UI Elements
+const toolbar = new Toolbar(header);
+const player = new Player(main);
+//const chatbox = new ChatBox(section);
+
+let jsonpOptions = {};
 
 /**
  * Fetch the current TV shows using JSONP and fetch JSONP polyfill.
@@ -23,9 +42,9 @@ async function fetchCurrentPrograms(services = []) {
   params.set('end', '0');
 
   // Fix the jsonp callback function name for service worker compatibility
-  const options = {jsonpCallbackFunction: 'jsonp_options'};
+  jsonpOptions = {jsonpCallbackFunction: 'jsonp_options'};
 
-  const response = await fetchp(url.href, options);
+  const response = await fetchp(url.href, jsonpOptions);
   // TODO Validate response
   const json = await response.json();
   return json.data;
@@ -45,11 +64,11 @@ async function fetchServices(type = 'TVChannel') {
   params.set('type', type);
 
   // Fix the jsonp callback function name for service worker compatibility
-  const options = {jsonpCallbackFunction: 'jsonp_services'};
+  jsonpOptions = {jsonpCallbackFunction: 'jsonp_services'};
 
   let response;
   try {
-    response = await fetchp(url.href, options);
+    response = await fetchp(url.href, jsonpOptions);
     const json = await response.json();
     return json.data;
   } catch (error) {
@@ -74,9 +93,9 @@ async function fetchStream(programId, mediaId) {
   params.set('protocol', 'HLS');
 
   // Fix the jsonp callback function name for service worker compatibility
-  const options = {jsonpCallbackFunction: 'jsonp_stream'};
+  const jsonpOptions = {jsonpCallbackFunction: 'jsonp_stream'};
 
-  const response = await fetchp(url.href, options);
+  const response = await fetchp(url.href, jsonpOptions);
   // TODO Validate response
   const json = await response.json();
   return json.data[0];
@@ -149,14 +168,14 @@ function decrypt(url, secret) {
   const iv = CryptoJS.enc.Hex.parse(data.substr(0, 32));
   const message = CryptoJS.enc.Hex.parse(data.substr(32));
 
-  const options = {
+  jsonpOptions = {
     iv: iv,
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7,
   };
 
   const params = CryptoJS.lib.CipherParams.create({ciphertext: message});
-  const decryptedMessage = CryptoJS.AES.decrypt(params, key, options);
+  const decryptedMessage = CryptoJS.AES.decrypt(params, key, jsonpOptions);
   return decryptedMessage.toString(CryptoJS.enc.Utf8);
 }
 
@@ -224,26 +243,11 @@ async function handleRouteChange() {
   player.program = currentProgram;
   player.render();
 
-  chatbox.render()
+  //chatbox.render();
 }
 
 
-// UI elements we bind to
-const header = document.querySelector('header');
-const main = document.querySelector('main');
-const section = document.querySelector('#chatbox');
 
-// API configuration
-const baseUrl = 'https://external.api.yle.fi/v1';
-
-// Application state data
-let channels = [];
-let programs = [];
-
-// UI Elements
-const toolbar = new Toolbar(header);
-const player = new Player(main);
-const chatbox = new ChatBox(section)
 
 // Update for UI state changes
 window.addEventListener('hashchange', handleRouteChange);

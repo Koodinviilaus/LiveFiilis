@@ -251,9 +251,9 @@ gulp.task('make-service-worker', gulp.series(['copy', 'copy-workbox'], (resolve,
 
 
 
-// Build production files, the default task
-gulp.task('default', gulp.series('clean', 'styles', 'lint', 'html', 'scripts', 'images', 'copy', 'make-service-worker', (cb) =>
-  runSequence(cb).done()
+// Build production files, the default task.
+gulp.task('default', gulp.series('clean', ['styles', 'lint', 'html', 'scripts', 'images', 'copy'], 'make-service-worker', done =>
+  done()
 ));
 
 

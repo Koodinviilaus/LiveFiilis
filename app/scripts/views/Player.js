@@ -1,5 +1,5 @@
-import { bind, wire } from 'hyperhtml';
-import Hls from 'hls.js';
+import {bind, wire} from 'hyperhtml';
+//import Hls from 'hls.js';
 import valechatti from '../../../valechatti.json';
 
 /**
@@ -20,11 +20,11 @@ export default class Player {
   }
   /**
    * Used for chat function, will be updated to provide real data
-   */
+ 
   parceMessages() {
-    //return ['testmsg1', 'testmsg']
+    // return ['testmsg1', 'testmsg']
     return valechatti;
-  }
+  }  */
   /**
    * Renders the player.
    *
@@ -33,7 +33,7 @@ export default class Player {
   render() {
     console.log(`Render Player with url '${this.url}'`);
 
-    const messages = this.parceMessages();
+    //const messages = this.parceMessages();
     const start = this.program.startTime;
     const startSeconds = start.getTime() / 1000;
     console.log(startSeconds);
@@ -43,7 +43,7 @@ export default class Player {
     // const time = `${start.getHours()}:${String(start.getMinutes()).padStart(2, '0')}`;
     const video = wire() `<video style="width: 100%;" ></video>`;
     console.log('timeseconds ' + timeSeconds);
-    let config = {
+    const config = {
       startPosition: timeSeconds,
     };
     if (Hls.isSupported()) { 
@@ -58,12 +58,12 @@ export default class Player {
           console.log('should be playing');
         });
     }
-
-    return bind(this.element) `
-      ${ video}
-      <ul class="chat-messages">
+/*<ul class="chat-messages">
       ${ messages.map((message) => `<li>${message.msg}</li>`)}
      </ul>
-    `;
+    */
+    return bind(this.element) `
+      ${ video}
+      `;
   }
 }
