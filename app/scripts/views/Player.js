@@ -1,5 +1,5 @@
 import { bind, wire } from 'hyperhtml';
-// import Hls from 'hls.js'
+import Hls from 'hls.js';
 import valechatti from '../../../valechatti.json';
 
 /**
@@ -18,7 +18,9 @@ export default class Player {
     this.url = url;
     this.program = program;
   }
-
+  /**
+   * Used for chat function, will be updated to provide real data
+   */
   parceMessages() {
     //return ['testmsg1', 'testmsg']
     return valechatti;
@@ -44,7 +46,8 @@ export default class Player {
     let config = {
       startPosition: timeSeconds,
     };
-    if (Hls.isSupported()) {
+    if (Hls.isSupported()) { 
+      //Hls.js decodes HTTP Live Streams into MP4 fragments  
       const hls = new Hls(config);
       hls.loadSource(this.url);
       hls.attachMedia(video);

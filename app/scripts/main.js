@@ -92,13 +92,13 @@ async function fetch() {
   const newPrograms = await fetchCurrentPrograms(services.map((s) => s.id));
 
   channels = services.map((service) => {
-      return {
-        id: service.id,
-        title: service.title.fi || service.title.sv,
-      };
-    })
-    // Only use channels that have a current program available
-    .filter((c) => newPrograms.find((p) => c.id === p.service.id));
+    return {
+      id: service.id,
+      title: service.title.fi || service.title.sv,
+    };
+  })
+  // Only use channels that have a current program available
+  .filter((c) => newPrograms.find((p) => c.id === p.service.id));
 
   programs = newPrograms.map((program) => {
     const linkedChannel = channels.find((c) => c.id === program.service.id);

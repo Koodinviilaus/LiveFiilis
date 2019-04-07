@@ -1,15 +1,15 @@
 // import { wire, bind } from 'hyperhtml'
-import { bind } from 'hyperhtml'
-import { Socket } from 'phoenix'
+import {bind} from 'hyperhtml';
+import {Socket} from 'phoenix';
 
 export default class ChatBox {
     constructor(element) {
-        console.log("component mouning...")
+        console.log("component mounting...")
         this.element = element
 
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
-        
+
         this.connectToSocket()
         console.log(this)
 

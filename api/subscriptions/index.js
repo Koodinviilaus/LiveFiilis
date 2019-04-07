@@ -30,7 +30,7 @@ export default async function handlePUSH(req, res, next) {
     // Send a registration, with the keys for GCM
     const options = {
       TTL: 60*60, // One hour validity
-      gcmAPIKey: config.gcmAPIKey,
+      firebaseAPIKey: config.firebaseAPIKey,
       vapidDetails: config.vapidDetails,
     };
 
